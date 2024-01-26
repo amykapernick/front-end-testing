@@ -1,0 +1,123 @@
+---
+import { getImage } from "@astrojs/image";
+import Header from "./header.astro";
+import Footer from "./footer.astro";
+import DevStyles from "./devStyles.astro";
+import Favicon from "../img/amy_small.png";
+import Logo from "../img/logo.png";
+
+import "../scss/main.scss";
+
+import generateColours from "../utils/generateColours.js";
+
+const env = import.meta.env.MODE;
+
+const { src: facebook } = await getImage({
+	src: Logo?.src,
+	width: 1200,
+	height: 630,
+});
+
+const { src: twitter } = await getImage({
+	src: Logo?.src,
+	width: 1200,
+	height: 675,
+});
+
+const { src: linkedin } = await getImage({
+	src: Logo?.src,
+	width: 1200,
+	height: 627,
+});
+
+const siteData = {
+	title: "Amy's Blog",
+	description:
+		"Front end developer who lives in Perth with her border collie. Just a few musings and ramblings...",
+};
+
+const content = {
+	...siteData,
+	imageOg: facebook,
+	imageLinkedin: linkedin,
+	imageTwitter: twitter,
+	...Astro?.props?.content,
+	...Astro?.props?.content?.meta,
+};
+
+const { title, description } = content;
+
+const colours = generateColours;
+
+const styles = `
+	--colour: ${colours[0].colour}; 
+	--text: ${colours[0].text};
+	--colour_1: ${colours[1].colour}; 
+	--colour_2: ${colours[2].colour}; 
+	--colour_3: ${colours[3].colour}; 
+	--colour_4: ${colours[4].colour}; 
+	--colour_5: ${colours[5].colour}; 
+`;
+---
+
+<!DOCTYPE html>
+<html lang="en-AU">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="x-ua-compatible" content="ie=edge" />
+		<meta
+			name="viewport"
+			content="width=device-width,initial-scale=1,shrink-to-fit=no"
+		/>
+		<link rel="shortcut icon" href={Favicon?.src} />
+
+		<title>{title}</title>
+		<meta name="description" content={description} />
+
+		{
+			content?.canonical && (
+				<link rel="canonical" href={content.canonical} />
+			)
+		}
+
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta
+			property="og:image"
+			content={content.imageOg || content.imageLinkedin || Logo?.src}
+		/>
+		<meta name="author" content="Amy Kapernick" />
+		<meta
+			property="og:url"
+			content={`${import.meta.env.SITE_URL}/${content.slug || ""}`}
+		/>
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content="@amys_kapers" />
+		<meta
+			property="twitter:image"
+			content={content.imageTwitter || Logo?.src}
+		/>
+		<meta name="twitter:creator" content="@amys_kapers" />
+
+		<slot name="head" />
+
+		<script
+			src="https://cdn.usefathom.com/script.js"
+			data-site="YZSOKFBM"
+			defer
+		></script>
+	</head>
+
+	<body style={styles} class={Astro.props.class}>
+		<!-- <img src={facebook} /> -->
+		{env === "development" && <DevStyles />}
+		<Header />
+
+		<main>
+			<slot />
+		</main>
+
+		<Footer />
+	</body>
+</html>

@@ -1,0 +1,153 @@
+@use '../variables.scss' as var;
+@use '../mixins.scss';
+
+*:not(figure) {
+	>img {
+		max-width: 100%;
+	}
+}
+
+figure {
+	--figure_colour: var(--colour_5);
+	--shadow_colour: var(--figure_colour);
+	position: relative;
+	// --shadow_size:
+	width: max-content;
+	max-width: 100%;
+	margin: 10px auto 20px;
+
+	&:before {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		opacity: 0.1;
+		background: var(--shadow_colour);
+		inset: -10px;
+	}
+
+	img {
+		display: block;
+		max-width: calc(100vw - 40px);
+		max-height: 600px;
+		object-fit: contain;
+	}
+
+	picture {
+		@include mixins.shadow_bottom_left;
+		display: block;
+		position: relative;
+
+		&:last-child {
+			margin-bottom: 40px;
+
+			&:after {
+				@include mixins.shadow_defaults;
+				top: 60%;
+				right: 40px;
+				bottom: -30px;
+				width: 100vw;
+			}
+		}
+	}
+
+	&:nth-of-type(2n) {
+		picture {
+			@include mixins.shadow_bottom_right;
+
+			&:last-child {
+				&:after {
+					left: 40px;
+				}
+			}
+		}
+	}
+}
+
+figcaption {
+	display: block;
+	margin-top: 10px;
+	padding: 10px 0;
+	color: var.$neutral;
+	letter-spacing: 0.1em;
+
+	&>* {
+		&:first-child {
+			margin-top: 0;
+		}
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.static_tweet {
+	display: block;
+	max-width: 450px;
+	margin: 20px auto;
+	overflow: hidden;
+	border: 1px solid var.$grey;
+	border-radius: 40px;
+}
+
+@media(min-width: 40em) {
+	figure {
+		--shadow_size: 30px;
+
+		margin-bottom: 50px;
+
+		img {
+			max-width: calc(100vw - 100px);
+		}
+
+		picture {
+			&:last-child {
+				margin-bottom: 150px;
+
+				&:after {
+					right: 90px;
+					bottom: -90px;
+				}
+			}
+		}
+
+		pre {
+			margin: 0;
+
+			&+figcaption {
+				margin-top: 0;
+				font-style: italic;
+			}
+		}
+
+		&:nth-of-type(2n) {
+			picture {
+				&:last-child {
+					&:after {
+						left: 90px;
+					}
+				}
+			}
+		}
+	}
+
+	figcaption {
+		margin-top: 20px;
+	}
+}
+
+@media(min-width: 60em) {
+	figure {
+		img {
+			max-width: calc(80vw);
+		}
+	}
+}
+
+@media(min-width: 70em) {
+	figure {
+		img {
+			max-width: calc(1000px);
+		}
+	}
+}

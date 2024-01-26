@@ -1,0 +1,223 @@
+@use '../variables.scss' as var;
+
+pre,
+code {
+	color: var.$background;
+	font-size: 0.9em;
+	line-height: 1.5;
+	text-align: left;
+	white-space: pre-wrap;
+	hyphens: none;
+	tab-size: 4;
+}
+
+pre {
+	position: relative;
+	max-width: 800px;
+	margin: 1em auto;
+	padding: 1em 2em;
+	overflow: auto;
+	background: var.$neutral;
+
+	&>code[class*='language-'] {
+		z-index: 1;
+
+		&::selection,
+		&::mozselection {
+			background: #6ca7d8;
+		}
+
+		&[class*='language'] {
+			&:before {
+				position: absolute;
+				top: 0;
+				right: 20px;
+				padding: 5px 10px;
+				border-radius: 0 0 10px 10px;
+				background: var.$purple;
+				color: #ffffff;
+			}
+
+			&[class*='bash'] {
+				&:before {
+					content: '$';
+					position: static;
+					margin-right: 10px;
+					margin-left: -20px;
+					background: none;
+					color: #999999;
+				}
+			}
+
+			&[class*='html'],
+			&[class*='css'],
+			&[class*='scss'],
+			&[class*='javascript'],
+			&[class*='json'],
+			&[class*='shell'],
+			&[class*='yaml'],
+			&[class*='yml'],
+			&[class*='markdown'],
+			&[class*='md'] {
+				padding-top: 1em;
+			}
+
+			&[class*='html'] {
+				&:before {
+					content: 'HTML';
+					background: var.$orange;
+					color: var.$neutral;
+				}
+			}
+
+			&[class*='css'] {
+				&:before {
+					content: 'CSS';
+					background: var.$blue;
+					color: var.$neutral;
+				}
+			}
+
+			&[class*='scss'] {
+				&:before {
+					content: 'SCSS';
+					background: var.$pink;
+					color: var.$neutral;
+				}
+			}
+
+			&[class*='javascript'] {
+				&:before {
+					content: 'JS';
+					background: var.$yellow;
+					color: var.$neutral;
+				}
+			}
+
+			&[class*='json'] {
+				&:before {
+					content: 'JSON';
+				}
+			}
+
+			&[class*='shell'] {
+				&:before {
+					content: 'Shell';
+				}
+			}
+
+			&[class*='yaml'],
+			&[class*='yml'] {
+				&:before {
+					content: 'YAML';
+				}
+			}
+
+			&[class*='markdown'],
+			&[class*='md'] {
+				&:before {
+					content: 'Markdown';
+				}
+			}
+		}
+	}
+}
+
+:not(pre) {
+	&>code {
+		display: inline-block;
+		padding: 0 5px;
+		background: var.$white;
+		color: var.$red;
+	}
+}
+
+pre {
+	code {
+		display: block;
+		color: var.$background;
+	}
+
+	code[class*='language-'] {
+		.comment,
+		.quote {
+			color: var.$grey;
+		}
+
+		.variable,
+		.template-variable,
+		.tag,
+		.name,
+		.selector-id,
+		.selector-class,
+		.atrule,
+		.regexp,
+		.deletion {
+			color: var.$pink;
+		}
+
+		.number,
+		.built_in,
+		.literal,
+		.type,
+		.params,
+		.meta,
+		.link {
+			color: var.$orange;
+		}
+
+		.attribute {
+			color: var.$yellow;
+		}
+
+		.string,
+		.symbol,
+		.bullet,
+		.addition,
+		.selector-pseudo {
+			color: var.$green;
+		}
+
+		.title,
+		.section {
+			color: var.$blue;
+		}
+
+		.keyword,
+		.selector-tag {
+			color: var.$purple;
+		}
+
+		.emphasis {
+			font-style: italic;
+		}
+
+		.strong {
+			font-weight: bold;
+		}
+
+		@media screen and (-ms-high-contrast: active) {
+			.addition,
+			.attribute,
+			.built_in,
+			.bullet,
+			.comment,
+			.link,
+			.literal,
+			.meta,
+			.number,
+			.params,
+			.string,
+			.symbol,
+			.type,
+			.quote {
+				color: highlight;
+			}
+
+			.keyword,
+			.selector-tag {
+				font-weight: bold;
+			}
+		}
+	}
+}

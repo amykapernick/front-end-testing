@@ -1,0 +1,32 @@
+---
+import { parseISO, format } from "date-fns";
+import Layout from "../partials/layout.astro";
+import SVG from "../parts/svg.astro";
+import Video from "../parts/video.astro";
+
+const content = {
+	...Astro.props.content,
+};
+
+const { title, date, video } = content;
+
+content.title = `${title} | Amy's Blog`;
+
+---
+
+<Layout content={content}>
+	<article class="content" id="main">
+		<header>
+			<h1>{title}</h1>
+			<time datetime={format(parseISO(date), "yyyy-mm-dd")}>
+				{format(parseISO(date), "dd MMM yyyy")}
+			</time>
+			<div class="underline">
+				<SVG name="illustrations/underline.svg" />
+			</div>
+		</header>
+		
+		<slot />
+		{video && <Video video={video} title={title} />}
+	</article>
+</Layout>

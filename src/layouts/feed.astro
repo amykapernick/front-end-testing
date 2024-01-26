@@ -1,0 +1,61 @@
+---
+import Layout from "../partials/layout.astro";
+import Card from "../parts/card.astro";
+
+const { page, posts, content, mainFeed } = Astro.props.data;
+
+const feedClasses = ["feed"];
+
+if (mainFeed) {
+	if (page.currentPage % 2 == 0) {
+		feedClasses.push("even");
+	} else {
+		feedClasses.push("odd");
+	}
+}
+---
+
+<style lang="scss"></style>
+
+<Layout content={content}>
+	<slot />
+	<div>
+		<ul class={feedClasses.join(" ")}>
+			{
+				posts.map((post) => (
+					<li>
+						<Card data={{ ...post.frontmatter, ...post }} />
+					</li>
+				))
+			}
+		</ul>
+		<ul class="pagination">
+			<li>
+				{
+					page?.url?.prev ? (
+						<a href={page.url.prev}>Previous</a>
+					) : (
+						<>Previous</>
+					)
+				}
+			</li>
+
+			<>
+				{
+					page.totalPages.map((n) => (
+						<li
+							aria-current={
+								n == page.currentPage ? "page" : false
+							}
+						>
+							<a href={`/${n}`}>{n}</a>
+						</li>
+					))
+				}
+			</>
+			<li>
+				{page?.url?.next ? <a href={page.url.next}>Next</a> : <>Next</>}
+			</li>
+		</ul>
+	</div>
+</Layout>
