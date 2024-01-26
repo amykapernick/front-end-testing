@@ -29,33 +29,5 @@ if (mainFeed) {
 				))
 			}
 		</ul>
-		<ul class="pagination">
-			<li>
-				{
-					page?.url?.prev ? (
-						<a href={page.url.prev}>Previous</a>
-					) : (
-						<>Previous</>
-					)
-				}
-			</li>
-
-			<>
-				{
-					page.totalPages.map((n) => (
-						<li
-							aria-current={
-								n == page.currentPage ? "page" : false
-							}
-						>
-							<a href={`/${n}`}>{n}</a>
-						</li>
-					))
-				}
-			</>
-			<li>
-				{page?.url?.next ? <a href={page.url.next}>Next</a> : <>Next</>}
-			</li>
-		</ul>
 	</div>
 </Layout>
