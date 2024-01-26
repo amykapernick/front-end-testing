@@ -22,7 +22,6 @@ jobs:
       - name: Checkout Repo Code
         # The GitHub Action package that we're using in this step, most of the time this is how we'll be defining what a step does
         uses: actions/checkout@v3
-
       - name: Setup Node
         uses: actions/setup-node@v3
         # Some actions will also require values/config to be passed in, so these are set under the `with` property
@@ -30,7 +29,6 @@ jobs:
           # Eg. for the setup node package, it can take a value of which node version you want to use
           # https://github.com/actions/setup-node#supported-version-syntax
           node-version: 16
-
       - name: Install Node Modules
-          # We don't need a actions package to install node modules, instead we can run a command directly in the runner and install them the same way we would in our terminal
-          run: npm install
+        # We don't need a actions package to install node modules, instead we can run a command directly in the runner and install them the same way we would in our terminal
+        run: npm install
