@@ -10,8 +10,8 @@ const {
 	title,
 	date = new Date().toISOString(),
 	slug,
-	categories,
 	type,
+	description
 } = Astro.props.data;
 
 const image = featured?.src
@@ -48,6 +48,6 @@ const image = featured?.src
 		{format(parseISO(date), "dd MMM yyyy")}
 	</time>
 	<p class="excerpt">
-		<PostExcerpt post={Astro.props.data} words={50} addEllipsis={true} />
+		{description}
 	</p>
 </article>
