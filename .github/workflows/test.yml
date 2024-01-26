@@ -39,7 +39,7 @@ jobs:
         # For this step we also need to use some environment variables, which we're pulling in from GitHub Secrets
         # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsenv
         env:
-          TOKEN: ${{ secrets.NETLTOKENIFY_AUTH_TOKEN }}
+          TOKEN: ${{ secrets.TOKEN }}
           SITE_ID: ${{ secrets.SITE_ID }}
         # This step will run a command in the terminal, which runs a custom script we'll create to build and deploy the site
         run: ./.github/actions/netlify_deploy.sh
