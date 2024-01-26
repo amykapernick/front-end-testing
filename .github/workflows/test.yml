@@ -28,7 +28,7 @@ jobs:
         with:
           # Eg. for the setup node package, it can take a value of which node version you want to use
           # https://github.com/actions/setup-node#supported-version-syntax
-          node-version: 16
+          node-version: 20
       - name: Install Node Modules
         # We don't need a actions package to install node modules, instead we can run a command directly in the runner and install them the same way we would in our terminal
         run: npm install
@@ -46,7 +46,7 @@ jobs:
 
         # Once the site is build, we're going to use the GitHub Script package to add a comment to our PR, so that we know everything has built and so we can easily find the preview URL if we want to check something
         # https://github.com/actions/github-script
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@v7
         with:
           script: |
             github.rest.issues.createComment({
