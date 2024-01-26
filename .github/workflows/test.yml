@@ -16,6 +16,10 @@ jobs:
     # Set the platform that the job will run on, you can choose a number of different options, but running on Linux is the cheapest option
     # https://docs.github.com/en/actions/using-jobs/choosing-the-runner-for-a-job
     runs-on: ubuntu-22.04
+    # Because the testing job is different, we need to out the Netlify URL so we can access it in another job
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idoutputs
+    outputs:
+      deploy_url: ${{steps.build_site.outputs.NETLIFY_URL}}
     # Each job has a number of steps to complete (these will complete one after another), most of the time your first step will be to checkout the repo code, otherwise you won't have anything to work with
     steps:
       # Name of the action (this is for us to identify it when it runs)
@@ -68,3 +72,14 @@ jobs:
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "dist" # Built app content directory - optional
+
+  # Creating a new job for the tests to run in
+  test:
+    # Because the website has to have built first, we're defining a dependency on the `needs` property, that the test job needs to have the build job complete first
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idneeds
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      # Jobs run in their own separate environments, so we need to checkout the repo code again so we can run tests that are defined in the repo
+      - name: Checkout Repo Code
+        uses: actions/checkout@v3
