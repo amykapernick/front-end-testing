@@ -24,4 +24,4 @@ jobs:
         env:
           TOKEN: ${{ secrets.TOKEN }}
           SITE_ID: ${{ secrets.SITE_ID }}
-        run: ./_actions/netlify_deploy.sh --p true
+        run: ./.github/actions/netlify_deploy.sh --p true
