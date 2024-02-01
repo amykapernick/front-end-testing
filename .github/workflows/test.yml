@@ -98,10 +98,7 @@ jobs:
           uploadArtifacts: true
           temporaryPublicStorage: true
 
-      - run: npm install
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+      - run: npm install && npx playwright install --with-deps
 
       - name: Run Playwright tests
         env:
