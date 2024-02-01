@@ -84,12 +84,12 @@ jobs:
       - name: Checkout Repo Code
         uses: actions/checkout@v3
 
-      - run: echo ${{needs.build.outputs.deploy_url}}
+      - run: echo "${{needs.build.outputs.deploy_url}}"
 
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v10
         with:
           urls: |
-            ${{ needs.build.outputs.deploy_url }}
+            "${{ needs.build.outputs.deploy_url }}"
           uploadArtifacts: true
           temporaryPublicStorage: true
