@@ -4,6 +4,19 @@
 # https://cli.netlify.com/commands/deploy
 COMMAND="netlify deploy --build --site ${SITE_ID} --auth ${TOKEN} --json"
 
+# Check if the production flag is included
+while getopts p: flag
+do
+	case "${flag}" in
+		p) prod=${OPTARG};;
+	esac
+done
+
+# If this is a production build, add the production flag to the netlify build command
+if [ "$prod" = "true" ]; then
+	COMMAND="$COMMAND --prod"
+fi
+
 # Next we'll run the command, and save the output in another variable so we can access it
 OUTPUT=$($COMMAND)
 
