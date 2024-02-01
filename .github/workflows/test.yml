@@ -89,6 +89,5 @@ jobs:
         with:
           urls: |
             ${{ needs.build.outputs.deploy_url }}
-            https://example.com/blog
           uploadArtifacts: true
           temporaryPublicStorage: true
