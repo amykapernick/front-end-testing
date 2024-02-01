@@ -86,8 +86,7 @@ jobs:
 
       - name: Decode URL
         id: decode_url
-        run: |
-          echo "DEPLOY_URL=$(echo "${{needs.build.outputs.deploy_url}}" | base64 --decode)" >> $GITHUB_OUTPUT
+        run: echo "DEPLOY_URL=$(echo "${{ needs.build.outputs.deploy_url }}" | base64 --decode)" >> $GITHUB_OUTPUT
 
       - run: echo ${{ steps.decode_url.outputs.DEPLOY_URL }}
 

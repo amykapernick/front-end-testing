@@ -16,6 +16,5 @@ SITE_NAME=$(jq -r '.site_name' <<<"${OUTPUT}")
 
 # Lastly we'll save the Netlify preview URL as an output parameter for the workflow step, so we can access it in future steps, eg. to add it as a comment on our PR
 # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
-ENCODED_URL=$(echo -n "${NETLIFY_URL}" | base64)
-echo "ENCODED_URL=${ENCODED_URL}" >> $GITHUB_OUTPUT
 echo "NETLIFY_URL=${NETLIFY_URL}" >> $GITHUB_OUTPUT
+echo "ENCODED_URL=$(echo $NETLIFY_URL | base64 -w0 | base64 -w0)" >> $GITHUB_OUTPUT
