@@ -84,9 +84,11 @@ jobs:
       - name: Checkout Repo Code
         uses: actions/checkout@v3
 
-      - name: Lighthouse Test
-        uses: foo-software/lighthouse-check-action@master
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v10
         with:
-          urls: "${{ needs.build.outputs.deploy_url }}"
-          prCommentEnabled: true
-          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
+          urls: |
+            ${{ needs.build.outputs.deploy_url }}
+            https://example.com/blog
+          uploadArtifacts: true
+          temporaryPublicStorage: true
