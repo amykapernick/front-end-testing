@@ -19,7 +19,7 @@ jobs:
     # Because the testing job is different, we need to out the Netlify URL so we can access it in another job
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idoutputs
     outputs:
-      deploy_url: ${{steps.build_site.outputs.NETLIFY_URL}}
+      deploy_url: ${{steps.build_site.outputs.ENCODED_URL}}
     # Each job has a number of steps to complete (these will complete one after another), most of the time your first step will be to checkout the repo code, otherwise you won't have anything to work with
     steps:
       # Name of the action (this is for us to identify it when it runs)
@@ -84,16 +84,17 @@ jobs:
       - name: Checkout Repo Code
         uses: actions/checkout@v3
 
-      - run: echo ${{needs.build.outputs.deploy_url}}
+      - name: Decode URL
+        id: decode_url
+        run: |
+          echo "DEPLOY_URL=$(echo "${{needs.build.outputs.deploy_url}}" | base64 --decode)" >> $GITHUB_OUTPUT
 
-      - env:
-          OUTPUT: ${{needs.build.outputs.deploy_url}}
-        run: echo "$OUTPUT"
+      - run: echo ${{ steps.decode_url.outputs.DEPLOY_URL }}
 
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v10
         with:
           urls: |
-            "${{ needs.build.outputs.deploy_url }}"
+            "${{ steps.decode_url.outputs.DEPLOY_URL }}"
           uploadArtifacts: true
           temporaryPublicStorage: true
