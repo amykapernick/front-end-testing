@@ -19,6 +19,12 @@ jobs:
       - name: Install Node Packages
         run: npm install
 
+      - name: Add Issues from Comments
+        uses: "alstr/todo-to-issue-action@v4"
+        with:
+          AUTO_ASSIGN: true
+          CLOSE_ISSUES: true
+
       - name: Deploy to Netlify
         id: build_site
         env:

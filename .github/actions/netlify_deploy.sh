@@ -12,6 +12,7 @@ do
 	esac
 done
 
+# TODO: Fix prod command
 # If this is a production build, add the production flag to the netlify build command
 if [ "$prod" = "true" ]; then
 	COMMAND="$COMMAND --prod"
