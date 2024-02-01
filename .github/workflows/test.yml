@@ -25,7 +25,7 @@ jobs:
       # Name of the action (this is for us to identify it when it runs)
       - name: Checkout Repo Code
         # The GitHub Action package that we're using in this step, most of the time this is how we'll be defining what a step does
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Node
         uses: actions/setup-node@v3
         # Some actions will also require values/config to be passed in, so these are set under the `with` property
@@ -82,7 +82,7 @@ jobs:
     steps:
       # Jobs run in their own separate environments, so we need to checkout the repo code again so we can run tests that are defined in the repo
       - name: Checkout Repo Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Decode URL
         id: decode_url
@@ -97,3 +97,21 @@ jobs:
             "${{ steps.decode_url.outputs.DEPLOY_URL }}"
           uploadArtifacts: true
           temporaryPublicStorage: true
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        env:
+          BASE_URL: ${{ steps.decode_url.outputs.DEPLOY_URL }}
+        run: npx playwright test
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
