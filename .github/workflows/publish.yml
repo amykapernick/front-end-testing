@@ -1,0 +1,27 @@
+name: Build and Publish
+
+on:
+  push:
+    branches: [prod]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repo Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Node Packages
+        run: npm install
+
+      - name: Deploy to Netlify
+        id: build_site
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+          SITE_ID: ${{ secrets.SITE_ID }}
+        run: ./_actions/netlify_deploy.sh --p true

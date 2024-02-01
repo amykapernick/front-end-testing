@@ -4,6 +4,19 @@
 # https://cli.netlify.com/commands/deploy
 COMMAND="netlify deploy --build --site ${SITE_ID} --auth ${TOKEN} --json"
 
+# Check if the production flag is included
+while getopts p: flag
+do
+	case "${flag}" in
+		p) prod=${OPTARG};;
+	esac
+done
+
+# If this is a production build, add the production flag to the netlify build command
+if [ "$prod" = "true" ]; then
+	COMMAND="$COMMAND --prod"
+fi
+
 # Next we'll run the command, and save the output in another variable so we can access it
 OUTPUT=$($COMMAND)
 
@@ -17,3 +30,4 @@ SITE_NAME=$(jq -r '.site_name' <<<"${OUTPUT}")
 # Lastly we'll save the Netlify preview URL as an output parameter for the workflow step, so we can access it in future steps, eg. to add it as a comment on our PR
 # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
 echo "NETLIFY_URL=${NETLIFY_URL}" >> $GITHUB_OUTPUT
+echo "ENCODED_URL=$(echo $NETLIFY_URL | base64 -w0 | base64 -w0)" >> $GITHUB_OUTPUT
