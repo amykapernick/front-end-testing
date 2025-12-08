@@ -2,24 +2,12 @@
 
 # Here we'll set the command to run, this is using the Netlify CLI using the deploy command. We'll pass in the environment variables for the site and auth token, and have set the output to come through as JSON
 # https://cli.netlify.com/commands/deploy
-COMMAND="netlify deploy --build --site ${SITE_ID} --auth ${TOKEN} --json"
-
-# Check if the production flag is included
-while getopts p: flag
-do
-	case "${flag}" in
-		p) prod=${OPTARG};;
-	esac
-done
-
-# TODO: Fix prod command
-# If this is a production build, add the production flag to the netlify build command
-if [ "$prod" = "true" ]; then
-	COMMAND="$COMMAND --prod"
-fi
+COMMAND="netlify deploy --dir=dist --site ${SITE_ID} --auth ${TOKEN} --json"
 
 # Next we'll run the command, and save the output in another variable so we can access it
 OUTPUT=$($COMMAND)
+
+echo $OUTPUT
 
 # To parse the output from Netlify, the jq package allows us to fetch the different properties and save them as individual variables.
 # https://stedolan.github.io/jq/
