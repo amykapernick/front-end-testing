@@ -19,7 +19,7 @@ jobs:
     # Because the testing job is different, we need to out the Netlify URL so we can access it in another job
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idoutputs
     outputs:
-      deploy_url: ${{steps.build_site.outputs.ENCODED_URL}}
+      deploy_url: ${{steps.deploy_site.outputs.ENCODED_URL}}
     # Each job has a number of steps to complete (these will complete one after another), most of the time your first step will be to checkout the repo code, otherwise you won't have anything to work with
     steps:
       # Name of the action (this is for us to identify it when it runs)
@@ -36,10 +36,12 @@ jobs:
       - name: Install Node Modules
         # We don't need a actions package to install node modules, instead we can run a command directly in the runner and install them the same way we would in our terminal
         run: npm install
+      - name: Build Site
+        run: npm run build
       - name: Deploy to Netlify
         # If we add an ID to our step, it can be referred to elsewhere in our workflow, this ID must be unique
         # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsid
-        id: build_site
+        id: deploy_site
         # For this step we also need to use some environment variables, which we're pulling in from GitHub Secrets
         # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsenv
         env:
@@ -57,7 +59,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'The build works! You can view the deploy preview at ${{steps.build_site.outputs.NETLIFY_URL}}'
+              body: 'The build works! You can view the deploy preview at ${{steps.deploy_site.outputs.NETLIFY_URL}}'
             })
 
       - name: Build And Deploy on Azure
